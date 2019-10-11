@@ -1,5 +1,5 @@
 prepare:
-	mkdir credentials data
+	mkdir -p credentials data
 	cp ./config/default_config.py ./config/config.py
 
 install:
