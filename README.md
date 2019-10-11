@@ -7,6 +7,9 @@
 # Клонировать репозиторий на локальную машину
 git clone https://github.com/Ragnaruk/ApiIntegration.git
 
+# Перейти в папку репозитория
+cd ApiIntegration
+
 # Запустить файл установки
 make prepare
 
