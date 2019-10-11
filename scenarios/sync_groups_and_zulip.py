@@ -16,7 +16,7 @@ def main():
             service = google_auth.get_directory_service()
 
             # Get groups of all requested domains
-            logger.info('Domain: %s', zulip_sync_google_domain)
+            logger.debug('Domain: %s', zulip_sync_google_domain)
 
             groups = get_groups_for_domain(service, zulip_sync_google_domain)
 
@@ -26,25 +26,25 @@ def main():
             # Get members of Google Groups and remove those who aren't registered in Zulip,
             # then create streams and invite remaining users.
             for group in groups:
-                logger.info('Group: %s', group)
+                logger.debug('Group: %s', group)
 
                 members = get_members_for_group(service, group['id'])
                 member_emails = [member['email'] for member in members]
 
-                logger.info('Group members\' emails: %s', member_emails)
+                logger.debug('Group members\' emails: %s', member_emails)
 
                 member_emails = list(set(member_emails) & zulip_user_emails)
                 member_emails += zulip_sync_mandatory_members
 
-                logger.info('Registered emails: %s', member_emails)
+                logger.debug('Registered emails: %s', member_emails)
 
                 result = create_stream(group['name'], group['description'], member_emails)
 
-                logger.info('Result: %s', result)
+                logger.debug('Result: %s', result)
         except Exception as exception:
             logger.error(exception)
 
-        logger.info('Sleeping for %s seconds.', zulip_sync_sleep_time)
+        logger.info('Update finished. Sleeping for %s seconds.', zulip_sync_sleep_time)
         sleep(zulip_sync_sleep_time)
 
 

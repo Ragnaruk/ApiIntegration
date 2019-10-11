@@ -37,7 +37,7 @@ def main():
         with open(path_data_directory / 'groups.pickle', 'rb') as file:
             groups = pickle.load(file)
 
-        [logger.info(x) for x in groups]
+        [logger.debug(x) for x in groups]
 
         # Get group names from orgUnitPaths
         group_names = []
@@ -56,7 +56,7 @@ def main():
         with open(path_data_directory / 'new_groups.pickle', 'rb') as file:
             group_names = pickle.load(file)
 
-        [logger.info(x) for x in group_names]
+        [logger.debug(x) for x in group_names]
 
         # Create groups
         group_results = []
@@ -74,7 +74,7 @@ def main():
         with open(path_data_directory / 'group_results.pickle', 'rb') as file:
             group_results = pickle.load(file)
 
-        [logger.info(x) for x in group_results]
+        [logger.debug(x) for x in group_results]
 
         group_users = {}
         for group_result in group_results:
@@ -92,7 +92,7 @@ def main():
         with open(path_data_directory / 'group_users.pickle', 'rb') as file:
             group_users = pickle.load(file)
 
-        [logger.info(x) for x in group_users]
+        [logger.debug(x) for x in group_users]
 
         # Add users to groups
         user_results = []
@@ -107,7 +107,7 @@ def main():
         with open(path_data_directory / 'user_results.pickle', 'rb') as file:
             user_results = pickle.load(file)
 
-        [logger.info(x) for x in user_results]
+        [logger.debug(x) for x in user_results]
 
         # # -----
         # # Might need rework
@@ -127,7 +127,7 @@ def main():
         # with open(path_data_directory / 'group_emails.pickle', 'rb') as file:
         #     group_emails = pickle.load(file)
         #
-        # [logger.info(x) for x in group_emails]
+        # [logger.debug(x) for x in group_emails]
         #
         # settings_results = []
         # for group_email in group_emails:
@@ -150,7 +150,7 @@ def main():
         # with open(path_data_directory / 'settings_results.pickle', 'rb') as file:
         #     settings_results = pickle.load(file)
         #
-        # [logger.info(x) for x in settings_results]
+        # [logger.debug(x) for x in settings_results]
 
     except Exception as exception:
         logger.error(exception)
