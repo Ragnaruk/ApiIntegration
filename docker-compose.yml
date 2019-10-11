@@ -1,0 +1,6 @@
+version: '3'
+services:
+  zulip_integration:
+    build:
+      context: .
+    image: ragnaruk/api_integration:latest
