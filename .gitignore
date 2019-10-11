@@ -1,4 +1,6 @@
 .idea
 /venv/
 
+/config/config.py
 /credentials/
+/data/
