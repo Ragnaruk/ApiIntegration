@@ -14,7 +14,7 @@ def get_client():
     return client
 
 
-def create_stream(name, description, member_emails):
+def create_stream(name, description, member_emails, invite_only):
     """
     Create a stream in Zulip and invite users to it.
 
@@ -33,7 +33,7 @@ def create_stream(name, description, member_emails):
             }
         ],
         principals=member_emails,
-        invite_only=True,
+        invite_only=invite_only,
     )
 
     return result

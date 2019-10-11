@@ -38,7 +38,7 @@ def main():
 
                 logger.debug('Registered emails: %s', member_emails)
 
-                result = create_stream(group['name'], group['description'], member_emails)
+                result = create_stream(group['name'], group['description'], member_emails, True)
 
                 logger.debug('Result: %s', result)
         except Exception as exception:
