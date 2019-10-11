@@ -13,13 +13,6 @@ path_data_directory.mkdir(parents=True, exist_ok=True)
 path_logs_directory = path_working_directory / 'logs'
 path_logs_directory.mkdir(parents=True, exist_ok=True)
 
-# Google API
-google_api_scopes = [
-    'https://www.googleapis.com/auth/admin.directory.user',
-    'https://www.googleapis.com/auth/admin.directory.group',
-    'https://www.googleapis.com/auth/apps.groups.settings'
-]
-
 # Scenario: Sync Groups and Zulip
 zulip_sync_logging_level = ERROR
 zulip_sync_google_domain = ''
