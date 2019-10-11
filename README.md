@@ -4,11 +4,8 @@
 
 ## Установка
 ```bash
-# Скопировать репозиторий на локальную машину
-mkdir api_integration
-cd api_integration
-git init .
-git pull https://github.com/Ragnaruk/ApiIntegration
+# Клонировать репозиторий на локальную машину
+git clone https://github.com/Ragnaruk/ApiIntegration.git
 
 # Запустить файл установки
 make prepare
