@@ -14,7 +14,7 @@ path_logs_directory = path_working_directory / 'logs'
 path_logs_directory.mkdir(parents=True, exist_ok=True)
 
 # Scenario: Sync Groups and Zulip
-zulip_sync = {
+sync_groups_and_zulip = {
     'logging_level': INFO,
     'google_domain': '',
     'mandatory_members': [],
