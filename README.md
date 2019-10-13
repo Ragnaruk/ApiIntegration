@@ -10,7 +10,7 @@ git clone https://github.com/Ragnaruk/ApiIntegration.git
 # Перейти в папку репозитория
 cd ApiIntegration
 
-# Запустить файл установки
+# Запустить файл установки с командой prepare
 make prepare
 
 # Скопировать учетные данные пользователя Google в файл /credentials/credentials.json
@@ -22,4 +22,10 @@ docker-compose build
 
 # Запустить Docker контейнер
 docker-compose up -d
+```
+
+## Обновление
+```bash
+# Запустить файл установки с командой update
+make update
 ```
