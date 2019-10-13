@@ -1,16 +1,17 @@
 import pickle
 from time import sleep
 
+from transliterate import translit
+
 from logs.logging import get_logger
 from api_google.google_auth import get_directory_service, get_groupsettings_service
 from api_google.google_api import get_users_for_domain, get_groups_for_domain, \
     create_group, add_user_to_group, get_group_settings, update_group_settings
-from config.config import google_groups_logging_level, path_data_directory, \
-    google_groups_google_domain, google_groups_user_filter_query
+from config.config import create_google_groups, path_data_directory
 
 
 def main():
-    logger = get_logger('create_google_groups', google_groups_logging_level)
+    logger = get_logger('create_google_groups', create_google_groups['logging_level'])
 
     try:
         service = get_directory_service()
@@ -18,8 +19,8 @@ def main():
         # Get all students in domain filtered by query
         users = get_users_for_domain(
             service,
-            google_groups_google_domain,
-            google_groups_user_filter_query
+            create_google_groups['google_domain'],
+            create_google_groups['user_filter_query']
         )
 
         with open(path_data_directory / 'users.pickle', 'wb') as file:
@@ -45,7 +46,7 @@ def main():
             group_names.append(group.split("/")[-1])
 
         # Filter out existing groups
-        existing_groups = get_groups_for_domain(service, google_groups_google_domain)
+        existing_groups = get_groups_for_domain(service, create_google_groups['google_domain'])
 
         for group in existing_groups:
             if group['name'] in group_names:
@@ -61,7 +62,10 @@ def main():
         # Create groups
         group_results = []
         for group_name in group_names:
-            group_results.append(create_group(service, group_name, ""))
+            email = (translit(group_name, "ru", reversed=True)).lower() \
+                    + "@" \
+                    + create_google_groups['google_domain']
+            group_results.append(create_group(service, email, group_name, ""))
 
         group_results.sort(key=lambda x: x['name'])
         users.sort(key=lambda x: x['orgUnitPath'])
@@ -85,7 +89,7 @@ def main():
                     group_users[group_result['email']].append([user['primaryEmail'], 'MEMBER'])
 
             # Mandatory user
-            group_users[group_result['email']].append(['support@miem.hse.ru', 'OWNER'])
+            group_users[group_result['email']] += create_google_groups['mandatory_members']
 
         with open(path_data_directory / 'group_users.pickle', 'wb') as file:
             pickle.dump(group_users, file)
@@ -115,11 +119,12 @@ def main():
         #
         # service = get_groupsettings_service()
         #
-        # from transliterate import translit
         # group_emails = []
         # for group_name in group_names:
         #     group_emails.append(
-        #         (translit(group_name, "ru", reversed=True)).lower() + "@miem.hse.ru"
+        #         (translit(group_name, "ru", reversed=True)).lower() \
+        #                     + "@" \
+        #                     + create_google_groups['google_domain']
         #     )
         #
         # with open(path_data_directory / 'group_emails.pickle', 'wb') as file:
