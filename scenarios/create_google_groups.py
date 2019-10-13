@@ -12,7 +12,9 @@ from config.config import create_google_groups, path_data_directory
 
 def main():
     logger = get_logger('create_google_groups', create_google_groups['logging_level'])
+
     data_path = path_data_directory / 'create_google_groups'
+    data_path.mkdir(parents=True, exist_ok=True)
 
     try:
         service = get_directory_service()
