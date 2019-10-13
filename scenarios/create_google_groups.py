@@ -12,6 +12,7 @@ from config.config import create_google_groups, path_data_directory
 
 def main():
     logger = get_logger('create_google_groups', create_google_groups['logging_level'])
+    data_path = path_data_directory / 'create_google_groups'
 
     try:
         service = get_directory_service()
@@ -23,9 +24,9 @@ def main():
             create_google_groups['user_filter_query']
         )
 
-        with open(path_data_directory / 'users.pickle', 'wb') as file:
+        with open(data_path / 'users.pickle', 'wb') as file:
             pickle.dump(users, file)
-        with open(path_data_directory / 'users.pickle', 'rb') as file:
+        with open(data_path / 'users.pickle', 'rb') as file:
             users = pickle.load(file)
 
         # Get unique orgUnitPaths from users
@@ -33,9 +34,9 @@ def main():
         for user in users:
             groups.add(user['orgUnitPath'])
 
-        with open(path_data_directory / 'groups.pickle', 'wb') as file:
+        with open(data_path / 'groups.pickle', 'wb') as file:
             pickle.dump(groups, file)
-        with open(path_data_directory / 'groups.pickle', 'rb') as file:
+        with open(data_path / 'groups.pickle', 'rb') as file:
             groups = pickle.load(file)
 
         [logger.debug(x) for x in groups]
@@ -52,9 +53,9 @@ def main():
             if group['name'] in group_names:
                 group_names.remove(group['name'])
 
-        with open(path_data_directory / 'new_groups.pickle', 'wb') as file:
+        with open(data_path / 'new_groups.pickle', 'wb') as file:
             pickle.dump(group_names, file)
-        with open(path_data_directory / 'new_groups.pickle', 'rb') as file:
+        with open(data_path / 'new_groups.pickle', 'rb') as file:
             group_names = pickle.load(file)
 
         [logger.debug(x) for x in group_names]
@@ -73,9 +74,9 @@ def main():
         # A client should wait 1 minute before adding users or sending messages to a new group
         sleep(60)
 
-        with open(path_data_directory / 'group_results.pickle', 'wb') as file:
+        with open(data_path / 'group_results.pickle', 'wb') as file:
             pickle.dump(group_results, file)
-        with open(path_data_directory / 'group_results.pickle', 'rb') as file:
+        with open(data_path / 'group_results.pickle', 'rb') as file:
             group_results = pickle.load(file)
 
         [logger.debug(x) for x in group_results]
@@ -91,9 +92,9 @@ def main():
             # Mandatory user
             group_users[group_result['email']] += create_google_groups['mandatory_members']
 
-        with open(path_data_directory / 'group_users.pickle', 'wb') as file:
+        with open(data_path / 'group_users.pickle', 'wb') as file:
             pickle.dump(group_users, file)
-        with open(path_data_directory / 'group_users.pickle', 'rb') as file:
+        with open(data_path / 'group_users.pickle', 'rb') as file:
             group_users = pickle.load(file)
 
         [logger.debug(x) for x in group_users]
@@ -106,9 +107,9 @@ def main():
                     add_user_to_group(service, group, group_user[0], group_user[1])
                 )
 
-        with open(path_data_directory / 'user_results.pickle', 'wb') as file:
+        with open(data_path / 'user_results.pickle', 'wb') as file:
             pickle.dump(user_results, file)
-        with open(path_data_directory / 'user_results.pickle', 'rb') as file:
+        with open(data_path / 'user_results.pickle', 'rb') as file:
             user_results = pickle.load(file)
 
         [logger.debug(x) for x in user_results]
@@ -127,9 +128,9 @@ def main():
         #                     + create_google_groups['google_domain']
         #     )
         #
-        # with open(path_data_directory / 'group_emails.pickle', 'wb') as file:
+        # with open(data_path / 'group_emails.pickle', 'wb') as file:
         #     pickle.dump(group_emails, file)
-        # with open(path_data_directory / 'group_emails.pickle', 'rb') as file:
+        # with open(data_path / 'group_emails.pickle', 'rb') as file:
         #     group_emails = pickle.load(file)
         #
         # [logger.debug(x) for x in group_emails]
@@ -150,9 +151,9 @@ def main():
         #         )
         #     )
         #
-        # with open(path_data_directory / 'settings_results.pickle', 'wb') as file:
+        # with open(data_path / 'settings_results.pickle', 'wb') as file:
         #     pickle.dump(settings_results, file)
-        # with open(path_data_directory / 'settings_results.pickle', 'rb') as file:
+        # with open(data_path / 'settings_results.pickle', 'rb') as file:
         #     settings_results = pickle.load(file)
         #
         # [logger.debug(x) for x in settings_results]
