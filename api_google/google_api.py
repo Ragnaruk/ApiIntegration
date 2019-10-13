@@ -3,10 +3,8 @@ https://developers.google.com/admin-sdk/directory/v1/quickstart/python
 https://developers.google.com/resources/api-libraries/documentation/admin/directory_v1/python/latest/index.html
 https://developers.google.com/identity/protocols/googlescopes
 
-https://developers.google.com/admin-sdk/groups-settings/v1/reference/groups
 https://developers.google.com/admin-sdk/directory/v1/guides/manage-group-members
 """
-from transliterate import translit
 
 
 def get_groups_for_domain(service, domain):
@@ -86,7 +84,7 @@ def get_users_for_domain(service, domain, query):
     return users
 
 
-def create_group(service, name, description):
+def create_group(service, email, name, description):
     """
     Create a Google Group via Google API.
     Groups created en masse might appear after 6-72 hours pass.
@@ -98,7 +96,7 @@ def create_group(service, name, description):
     results = service.groups().insert(
         body={
             "kind": "admin#directory#group",
-            "email": (translit(name, "ru", reversed=True)).lower() + "@miem.hse.ru",
+            "email": email,
             "name": name,
             "description": description,
         }
