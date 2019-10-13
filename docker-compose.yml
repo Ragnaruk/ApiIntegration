@@ -4,4 +4,5 @@ services:
     build:
       context: .
     image: ragnaruk/api_integration:latest
+    restart: always
     command: ['python', '/ApiIntegration/scenarios/sync_groups_and_zulip.py']
