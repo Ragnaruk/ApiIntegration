@@ -1,4 +1,4 @@
-# ApiIntegration
+# API Integration
 
 Коллекция скриптов для работы с различными API.
 
