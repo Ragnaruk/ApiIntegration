@@ -1,5 +1,5 @@
 from pathlib import Path
-from logging import INFO, ERROR
+from logging import ERROR, INFO, DEBUG
 
 # Paths
 path_working_directory = Path(__file__).parent.parent
