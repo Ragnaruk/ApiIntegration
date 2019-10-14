@@ -28,3 +28,12 @@ create_google_groups = {
     'user_filter_query': '',
     'mandatory_members': []
 }
+
+# Scenario: Create Zulip Streams
+sync_sheets_and_zulip = {
+    'logging_level': INFO,
+    'spreadsheet_id': '',
+    'range_names' : [],
+    'mandatory_members': [],
+    'sleep_time': 60 * 30
+}
