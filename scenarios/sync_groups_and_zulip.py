@@ -4,7 +4,7 @@ from time import sleep
 from logs.logging import get_logger
 from api_google.google_api_directory import get_directory_service, \
     get_groups_for_domain, get_members_for_group
-from api_zulip.zulip_api import create_stream, get_all_users
+from api_zulip.zulip_api import get_client, create_stream, get_all_users
 from config.config import sync_groups_and_zulip, path_data_directory
 
 
@@ -32,12 +32,15 @@ def main():
 
         try:
             service = get_directory_service()
+            client = get_client()
 
             # Get all Google groups of a domain
             groups = get_groups_for_domain(service, sync_groups_and_zulip['google_domain'])
 
             # Get all current Zulip users
-            zulip_user_emails = set([member['email'] for member in get_all_users()['members']])
+            zulip_user_emails = set(
+                [member['email'] for member in get_all_users(client)['members']]
+            )
 
             # Get members of Google Groups and remove those who aren't registered in Zulip,
             # then create streams and invite remaining users.
@@ -56,10 +59,9 @@ def main():
                 # Get emails only of those who are registered in Zulip
                 # plus mandatory members'
                 # minus users' who have already been subscribed
-                member_emails = \
-                    (member_emails & zulip_user_emails
-                     | set(sync_groups_and_zulip['mandatory_members'])
-                     ) - synced_users[group['email']]
+                member_emails &= zulip_user_emails
+                member_emails |= set(sync_groups_and_zulip['mandatory_members'])
+                member_emails -= synced_users[group['email']]
 
                 # Update synced users set
                 synced_users[group['email']] |= member_emails
@@ -69,12 +71,18 @@ def main():
                 logger.debug('Emails to register: %s', member_emails)
 
                 if not synced_users_dictionary_creation:
-                    result = create_stream(group['name'], group['description'], member_emails, True)
+                    result = create_stream(
+                        client,
+                        group['name'],
+                        group['description'],
+                        member_emails,
+                        True
+                    )
                     number_of_registered_users += len(member_emails)
 
                     logger.debug('Result: %s', result)
         except Exception as exception:
-            logger.error(exception)
+            logger.error(exception, exc_info=True)
 
         logger.debug('Writing synced users to: %s', synced_users_path)
         with open(synced_users_path, 'wb') as f:
