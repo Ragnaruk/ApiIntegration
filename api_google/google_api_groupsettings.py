@@ -15,7 +15,7 @@ def get_groupsettings_service():
         message='Missing client secrets.'
     )
 
-    storage = Storage(path_credentials_directory / 'groupsettings.dat')
+    storage = Storage(path_credentials_directory / 'token_groupsettings.dat')
     credentials = storage.get()
 
     if credentials is None or credentials.invalid:
@@ -62,3 +62,7 @@ def update_group_settings(service, group_key, settings):
     ).execute()
 
     return results
+
+
+if __name__ == '__main__':
+    get_groupsettings_service()

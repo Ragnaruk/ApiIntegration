@@ -22,13 +22,12 @@ def get_directory_service():
     """
     google_api_scopes = [
         'https://www.googleapis.com/auth/admin.directory.user',
-        'https://www.googleapis.com/auth/admin.directory.group',
-        'https://www.googleapis.com/auth/spreadsheets.readonly'
+        'https://www.googleapis.com/auth/admin.directory.group'
     ]
     credentials = None
 
-    if os.path.exists(path_credentials_directory / 'token.pickle'):
-        with open(path_credentials_directory / 'token.pickle', 'rb') as token:
+    if os.path.exists(path_credentials_directory / 'token_directory.pickle'):
+        with open(path_credentials_directory / 'token_directory.pickle', 'rb') as token:
             credentials = pickle.load(token)
 
     if not credentials or not credentials.valid:
@@ -41,7 +40,7 @@ def get_directory_service():
 
             credentials = flow.run_local_server(port=0)
 
-        with open(path_credentials_directory / 'token.pickle', 'wb') as token:
+        with open(path_credentials_directory / 'token_directory.pickle', 'wb') as token:
             pickle.dump(credentials, token)
 
     service = build('admin', 'directory_v1', credentials=credentials)
@@ -166,3 +165,7 @@ def add_user_to_group(service, group_key, user_email, role):
     ).execute()
 
     return results
+
+
+if __name__ == '__main__':
+    get_directory_service()
