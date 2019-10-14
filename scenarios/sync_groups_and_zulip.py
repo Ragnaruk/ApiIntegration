@@ -3,7 +3,7 @@ from time import sleep
 
 from logs.logging import get_logger
 from api_google import google_auth
-from api_google.google_api import get_groups_for_domain, get_members_for_group
+from api_google.google_api_directory import get_groups_for_domain, get_members_for_group
 from api_zulip.zulip_api import create_stream, get_all_users
 from config.config import sync_groups_and_zulip, path_data_directory
 
