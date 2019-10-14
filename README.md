@@ -1,6 +1,6 @@
 # API Integration
 
-Коллекция скриптов для работы с различными API.
+Коллекция сценариев для работы с различными API.
 
 ## Установка
 ### Docker Compose
@@ -41,7 +41,6 @@ make prepare
 # Скопировать учетные данные пользователя Google в файл /credentials/credentials.json
 # Скопировать учетные данные пользователя Zulip в файл /credentials/zuliprc.txt
 # Изменить файл /config/config.py
-# Изменить файл docker-compose.yaml
 
 # Запустить файл установки с командой install
 make install
