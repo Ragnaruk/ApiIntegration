@@ -1,6 +1,6 @@
 version: '3'
 services:
-  zulip_sync:
+  zulip_sync_groups:
     build:
       context: .
     image: ragnaruk/api_integration:latest
@@ -10,4 +10,17 @@ services:
       - ./config/config.py:/api_integration/config/config.py
       - ./credentials:/api_integration/credentials
       - ./data:/api_integration/data
+      - ./logs:/api_integration/logs
     command: ['python', '/api_integration/scenarios/sync_groups_and_zulip.py']
+  zulip_sync_sheets:
+    build:
+      context: .
+    image: ragnaruk/api_integration:latest
+    restart: always
+    init: true
+    volumes:
+      - ./config/config.py:/api_integration/config/config.py
+      - ./credentials:/api_integration/credentials
+      - ./data:/api_integration/data
+      - ./logs:/api_integration/logs
+    command: ['python', '/api_integration/scenarios/sync_sheets_and_zulip.py']
