@@ -20,7 +20,7 @@ make prepare
 # Собрать Docker образ
 docker-compose build
 
-# Запустить Docker контейнер
+# Запустить Docker контейнеры
 docker-compose up -d
 ```
 
