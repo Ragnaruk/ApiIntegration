@@ -14,18 +14,17 @@ def get_client():
     return client
 
 
-def create_stream(name, description, member_emails, invite_only):
+def create_stream(client, name, description, member_emails, invite_only):
     """
     Create a stream in Zulip and invite users to it.
 
+    :param client: A Zulip client object
     :param name: Name of the stream
     :param description: Description of the stream
     :param member_emails: List of emails of all users to be invited
     :param invite_only: Option to make the stream invite only
     :return: Result of request
     """
-    client = get_client()
-
     result = client.add_subscriptions(
         streams=[
             {
@@ -40,14 +39,25 @@ def create_stream(name, description, member_emails, invite_only):
     return result
 
 
-def get_all_users():
+def get_all_users(client):
     """
-    Get all currect Zulip users.
+    Get all current Zulip users.
 
+    :param client: A Zulip client object
     :return: Dictionary containing all current users.
     """
-    client = get_client()
-
     result = client.get_members()
+
+    return result
+
+
+def get_all_streams(client):
+    """
+    Get all current Zulip streams.
+
+    :param client: A Zulip client object
+    :return: Dictionary containing all current streams.
+    """
+    result = client.get_streams()
 
     return result
