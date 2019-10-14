@@ -162,7 +162,7 @@ def main():
         # [logger.debug(x) for x in settings_results]
 
     except Exception as exception:
-        logger.error(exception)
+        logger.error(exception, exc_info=True)
 
 
 if __name__ == '__main__':
