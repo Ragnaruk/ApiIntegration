@@ -14,9 +14,9 @@ prepare:
 	touch ./credentials/credentials.json
 	touch ./credentials/zuliprc.txt
 
+install: prepare
+	pip install --no-cache-dir -r requirements.txt
+
 update:
 	git reset --hard
 	git pull https://github.com/Ragnaruk/ApiIntegration.git
-
-install: prepare
-	pip install --no-cache-dir -r requirements.txt
