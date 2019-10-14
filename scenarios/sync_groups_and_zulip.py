@@ -2,8 +2,8 @@ import pickle
 from time import sleep
 
 from logs.logging import get_logger
-from api_google import google_auth
-from api_google.google_api_directory import get_groups_for_domain, get_members_for_group
+from api_google.google_api_directory import get_directory_service, \
+    get_groups_for_domain, get_members_for_group
 from api_zulip.zulip_api import create_stream, get_all_users
 from config.config import sync_groups_and_zulip, path_data_directory
 
@@ -31,7 +31,7 @@ def main():
             synced_users_dictionary_creation = True
 
         try:
-            service = google_auth.get_directory_service()
+            service = get_directory_service()
 
             # Get all Google groups of a domain
             groups = get_groups_for_domain(service, sync_groups_and_zulip['google_domain'])

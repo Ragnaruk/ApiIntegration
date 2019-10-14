@@ -4,10 +4,10 @@ from time import sleep
 from transliterate import translit
 
 from logs.logging import get_logger
-from api_google.google_auth import get_directory_service, get_groupsettings_service
-from api_google.google_api_directory import get_users_for_domain, get_groups_for_domain, \
-    create_group, add_user_to_group
-from api_google.google_api_groupsettings import get_group_settings, update_group_settings
+from api_google.google_api_directory import get_directory_service, get_users_for_domain, \
+    get_groups_for_domain, create_group, add_user_to_group
+from api_google.google_api_groupsettings import get_groupsettings_service, \
+    get_group_settings, update_group_settings
 from config.config import create_google_groups, path_data_directory
 
 
