@@ -19,4 +19,4 @@ install: prepare
 
 update:
 	git reset --hard
-	git pull https://github.com/Ragnaruk/ApiIntegration.git
+	git pull https://github.com/Ragnaruk/api_integration.git
