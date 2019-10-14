@@ -22,6 +22,8 @@ docker-compose build
 
 # Запустить Docker контейнеры
 docker-compose up -d
+
+# Перейти по ссылкам из консоли для авторизации в Google
 ```
 
 ## Обновление
