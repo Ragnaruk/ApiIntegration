@@ -84,6 +84,8 @@ def main():
                                 logger.error('Several streams starting with: %s', name)
                                 logger.error('Without space: %s', similar_stream_names)
                                 logger.error('With space: %s', more_similar_stream_names)
+                                
+                                continue
                         elif len(similar_stream_names) == 1:
                             name = similar_stream_names[0]
 
