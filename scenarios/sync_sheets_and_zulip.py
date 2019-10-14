@@ -76,16 +76,16 @@ def main():
                         logger.debug('Name, description, users: %s, %s, %s',
                                      name, description, member_emails)
 
-                        # if not synced_users_dictionary_creation:
-                        result = create_stream(
-                            name,
-                            description,
-                            member_emails,
-                            True
-                        )
-                        number_of_registered_users += len(member_emails)
+                        if not synced_users_dictionary_creation:
+                            result = create_stream(
+                                name,
+                                description,
+                                member_emails,
+                                True
+                            )
+                            number_of_registered_users += len(member_emails)
 
-                        logger.debug('Result: %s', result)
+                            logger.debug('Result: %s', result)
         except Exception as exception:
             logger.error(exception)
 
