@@ -23,6 +23,6 @@ update:
 	git pull https://github.com/Ragnaruk/api_integration.git
 
 reload:
-    docker-compose down
-    docker-compose build
-    docker-compose up -d
+	docker-compose down
+	docker-compose build
+	docker-compose up -d
