@@ -4,8 +4,9 @@ help:
 	@echo '                                                                                             '
 	@echo 'Usage:                                                                                       '
 	@echo '    make prepare                create necessary directories and files                       '
-	@echo '    make update                 reset changes in directory and pull a newest commit from git '
 	@echo '    make install                install python requirements                                  '
+	@echo '    make update                 reset changes in directory and pull a newest commit from git '
+	@echo '    make reload                 Take down, rebuild, and restart docker containers            '
 	@echo '                                                                                             '
 
 prepare:
@@ -20,3 +21,8 @@ install: prepare
 update:
 	git reset --hard
 	git pull https://github.com/Ragnaruk/api_integration.git
+
+reload:
+    docker-compose down
+    docker-compose build
+    docker-compose up -d
