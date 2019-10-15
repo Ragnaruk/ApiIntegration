@@ -59,35 +59,18 @@ def main():
                 for j in range(len(ranges[i]['values'])):
                     # If name and email of the leader both exist
                     if ranges[i + 0]['values'][j] and ranges[i + 2]['values'][j]:
-                        id = name = ranges[i + 0]['values'][j][0]
-                        description = \
-                            ranges[i + 1]['values'][j][0] if ranges[i + 1]['values'][j] else ''
+                        id = ranges[i + 0]['values'][j][0]
+                        description = ranges[i + 1]['values'][j][0] \
+                            if ranges[i + 1]['values'][j] else ''
                         leader_email = ranges[i + 2]['values'][j][0]
 
                         if id not in synced_users:
                             synced_users[id] = set()
 
-                        # Checking for renamed streams (streams that start with value of name)
-                        similar_stream_names = [x for x in zulip_stream_names if x.startswith(name)]
-
-                        logger.debug('similar_stream_names: %s', similar_stream_names)
-
-                        if len(similar_stream_names) > 1:
-                            more_similar_stream_names = \
-                                [x for x in similar_stream_names if x.startswith(name + ' ')]
-
-                            logger.debug('more_similar_stream_names: %s', more_similar_stream_names)
-
-                            if len(more_similar_stream_names) == 1:
-                                name = more_similar_stream_names[0]
-                            else:
-                                logger.error('Several streams starting with: %s', name)
-                                logger.error('Without space: %s', similar_stream_names)
-                                logger.error('With space: %s', more_similar_stream_names)
-                                
-                                continue
-                        elif len(similar_stream_names) == 1:
-                            name = similar_stream_names[0]
+                        try:
+                            name = get_current_stream_name(logger, zulip_stream_names, id)
+                        except ValueError:
+                            continue
 
                         # Add leader's email if they are registered in Zulip
                         member_emails = set()
@@ -103,7 +86,7 @@ def main():
 
                         member_emails = list(member_emails)
 
-                        logger.debug('Name, Description, Users: %s, %s, %s',
+                        logger.debug('Name: %s - Description: %s - Users: %s',
                                      name, description, member_emails)
 
                         if not synced_users_dictionary_creation:
@@ -127,6 +110,43 @@ def main():
         logger.info('Update finished. Registered %s users. Sleeping for %s seconds.',
                     number_of_registered_users, sync_sheets_and_zulip['sleep_time'])
         sleep(sync_sheets_and_zulip['sleep_time'])
+
+
+def get_current_stream_name(logger, zulip_stream_names, stream_id):
+    """
+    Check all Zulip streams and get a name for the current stream.
+    Raise ValueError if it is impossible to narrow down stream names.
+    
+    :param logger: Logger object
+    :param zulip_stream_names: List of Zulip stream names
+    :param stream_id: ID of the stream (default name)
+    :return: Name of the current stream
+    """
+    name = stream_id
+    if stream_id not in zulip_stream_names:
+        names_with_id = [x for x in zulip_stream_names if x.startswith(stream_id)]
+
+        logger.debug('names_with_id: %s', names_with_id)
+
+        if not names_with_id:
+            pass
+        elif len(names_with_id) == 1:
+            name = names_with_id[0]
+        elif len(names_with_id) > 1:
+            names_with_id_and_space = [x for x in names_with_id if x.startswith(stream_id + ' ')]
+
+            logger.debug('names_with_id_and_space: %s', names_with_id_and_space)
+
+            if len(names_with_id_and_space) == 1:
+                name = names_with_id_and_space[0]
+            else:
+                logger.error('Several streams starting with: %s', stream_id)
+                logger.error('Without space: %s', names_with_id)
+                logger.error('With space: %s', names_with_id_and_space)
+
+                raise ValueError
+
+    return name
 
 
 if __name__ == '__main__':
