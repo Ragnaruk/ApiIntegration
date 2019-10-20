@@ -39,6 +39,7 @@ def main():
         with open(data_path / 'groups.pickle', 'rb') as file:
             groups = pickle.load(file)
 
+        groups = sorted(groups)
         [logger.debug(x) for x in groups]
 
         with open(data_path / 'users.txt', 'w') as file:
