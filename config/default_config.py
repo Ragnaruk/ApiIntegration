@@ -29,6 +29,13 @@ create_google_groups = {
     'mandatory_members': []
 }
 
+# Scenario: Get Users From Google
+get_users_from_google = {
+    'logging_level': INFO,
+    'google_domain': '',
+    'user_filter_query': ''
+}
+
 # Scenario: Create Zulip Streams
 sync_sheets_and_zulip = {
     'logging_level': INFO,
