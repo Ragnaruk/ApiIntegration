@@ -2,7 +2,7 @@ import pickle
 from time import sleep
 
 from logs.logging import get_logger
-from api_google.google_api_sheets import get_sheets_service, get_muiltiple_ranges
+from api_google.google_api_sheets import get_sheets_service, get_multiple_ranges
 from api_zulip.zulip_api import get_client, create_stream, get_all_users, get_all_streams
 from config.config import sync_sheets_and_zulip, path_data_directory
 
@@ -33,7 +33,7 @@ def main():
             service = get_sheets_service()
             client = get_client()
 
-            ranges = get_muiltiple_ranges(
+            ranges = get_multiple_ranges(
                 service,
                 sync_sheets_and_zulip['spreadsheet_id'],
                 sync_sheets_and_zulip['range_names']

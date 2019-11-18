@@ -40,7 +40,7 @@ def get_sheets_service():
     return service
 
 
-def get_muiltiple_ranges(service, spreadsheet_id, range_names):
+def get_multiple_ranges(service, spreadsheet_id, range_names):
     """
     Get multiple ranges from Google Sheets.
 
