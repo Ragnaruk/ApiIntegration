@@ -16,6 +16,7 @@ make prepare
 
 # Скопировать учетные данные пользователя Google в файл ./credentials/credentials.json
 # Скопировать учетные данные пользователя Zulip в файл ./credentials/zuliprc.txt
+# Скопировать учетные данные пользователя Trello в файл ./credentials/trello_credentials.txt
 # Изменить файл ./config/config.py
 # Изменить файл ./docker-compose.yaml
 

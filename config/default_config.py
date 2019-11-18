@@ -36,11 +36,18 @@ get_users_from_google = {
     'user_filter_query': ''
 }
 
-# Scenario: Create Zulip Streams
+# Scenario: Sync Google Sheets and Zulip
 sync_sheets_and_zulip = {
     'logging_level': INFO,
     'spreadsheet_id': '',
     'range_names' : [],
     'mandatory_members': [],
     'sleep_time': 60 * 30
+}
+
+# Scenario: Sync Trello and Zulip
+sync_trello_and_zulip = {
+    'logging_level': INFO,
+    'mandatory_members': [],
+    'sleep_time': 60 * 10
 }
