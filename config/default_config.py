@@ -40,7 +40,7 @@ get_users_from_google = {
 sync_sheets_and_zulip = {
     'logging_level': INFO,
     'spreadsheet_id': '',
-    'range_names' : [],
+    'range_names': [],
     'mandatory_members': [],
     'sleep_time': 60 * 30
 }
