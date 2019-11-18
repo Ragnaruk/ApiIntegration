@@ -46,60 +46,79 @@ def main():
 
             [logger.debug(x) for x in ranges]
 
+            students = dict(zip(
+                [i[0] if i else "" for i in ranges[1]['values']],
+                [i[0] if i else "" for i in ranges[2]['values']]
+            ))
+
+            leaders = dict(zip(
+                [i[0] if i else "" for i in ranges[3]['values']],
+                [i[0] if i else "" for i in ranges[4]['values']]
+            ))
+
             zulip_user_emails = set(
                 [member['email'] for member in get_all_users(client)['members']]
             )
+
+            logger.debug(zulip_user_emails)
+
             zulip_stream_names = sorted(
                 [stream['name'] for stream in get_all_streams(client)['streams']]
             )
 
             logger.debug(zulip_stream_names)
 
-            for i in [0, 3]:
-                for j in range(len(ranges[i]['values'])):
-                    # If name and email of the leader both exist
-                    if ranges[i + 0]['values'][j] and ranges[i + 2]['values'][j]:
-                        id = ranges[i + 0]['values'][j][0]
-                        description = ranges[i + 1]['values'][j][0] \
-                            if ranges[i + 1]['values'][j] else ''
-                        leader_email = ranges[i + 2]['values'][j][0]
+            groups = []
+            for group in ranges[0]['values']:
+                id = group[0].split(" ", 1)[0]
+                description = group[0].split(" ", 1)[1]
 
-                        if id not in synced_users:
-                            synced_users[id] = set()
+                if id not in synced_users:
+                    synced_users[id] = set()
 
-                        try:
-                            name = get_current_stream_name(logger, zulip_stream_names, id)
-                        except ValueError:
-                            continue
+                try:
+                    name = get_current_stream_name(logger, zulip_stream_names, id)
+                except ValueError:
+                    continue
 
-                        # Add leader's email if they are registered in Zulip
-                        member_emails = set()
-                        if leader_email in zulip_user_emails:
-                            member_emails.add(leader_email)
+                member_emails = set()
 
-                        # Add mandatory members and substract already synced emails
-                        member_emails |= set(sync_sheets_and_zulip['mandatory_members'])
-                        member_emails -= synced_users[id]
+                # Leader email
+                if leaders[group[1]] in zulip_user_emails:
+                    member_emails.add(
+                        leaders[group[1]]
+                    )
 
-                        # Update synced users
-                        synced_users[id] |= member_emails
+                # Member emails
+                for i in range(2, len(group)):
+                    if students[group[i]] in zulip_user_emails:
+                        member_emails.add(
+                            students[group[i]]
+                        )
 
-                        member_emails = list(member_emails)
+                # Mandatory emails
+                member_emails |= set(sync_sheets_and_zulip['mandatory_members'])
 
-                        logger.debug('Name: %s - Description: %s - Users: %s',
-                                     name, description, member_emails)
+                # Synced users
+                member_emails -= synced_users[id]
+                synced_users[id] |= member_emails
 
-                        if not synced_users_dictionary_creation:
-                            result = create_stream(
-                                client,
-                                name,
-                                description,
-                                member_emails,
-                                True
-                            )
-                            number_of_registered_users += len(member_emails)
+                member_emails = list(member_emails)
 
-                            logger.debug('Result: %s', result)
+                logger.debug('Name: %s - Description: %s - Users: %s',
+                             name, description, member_emails)
+
+                if not synced_users_dictionary_creation:
+                    result = create_stream(
+                        client,
+                        name,
+                        description,
+                        member_emails,
+                        True
+                    )
+                    number_of_registered_users += len(member_emails)
+
+                    logger.debug('Result: %s', result)
         except Exception as exception:
             logger.error(exception, exc_info=True)
 
@@ -126,7 +145,7 @@ def get_current_stream_name(logger, zulip_stream_names, stream_id):
     if stream_id not in zulip_stream_names:
         names_with_id = [x for x in zulip_stream_names if x.startswith(stream_id)]
 
-        logger.debug('names_with_id: %s', names_with_id)
+        logger.debug('Stream names with id: %s', names_with_id)
 
         if not names_with_id:
             pass
