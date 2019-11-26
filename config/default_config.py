@@ -51,3 +51,13 @@ sync_trello_and_zulip = {
     'mandatory_members': [],
     'sleep_time': 60 * 10
 }
+
+# Scenario: Sync Sheets and Groups
+sync_sheets_and_groups = {
+    'logging_level': INFO,
+    'spreadsheet_id': '',
+    'range_names': [],
+    'mandatory_members': [],
+    'google_domain': '',
+    'sleep_time': 60 * 30
+}
