@@ -76,17 +76,17 @@ def main():
 
                 logger.debug('Emails to register: %s', member_emails)
 
-                # if not synced_users_dictionary_creation:
-                #     result = create_stream(
-                #         client,
-                #         name,
-                #         group['description'],
-                #         member_emails,
-                #         False
-                #     )
-                #     number_of_registered_users += len(member_emails)
-                #
-                #     logger.debug('Result: %s', result)
+                if not synced_users_dictionary_creation:
+                    result = create_stream(
+                        client,
+                        name,
+                        group['description'],
+                        member_emails,
+                        False
+                    )
+                    number_of_registered_users += len(member_emails)
+
+                    logger.debug('Result: %s', result)
         except Exception as exception:
             logger.error(exception, exc_info=True)
 
