@@ -82,7 +82,7 @@ def main():
                         name,
                         group['description'],
                         member_emails,
-                        True
+                        False
                     )
                     number_of_registered_users += len(member_emails)
 
