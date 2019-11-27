@@ -11,12 +11,3 @@ services:
       - ./data:/api_integration/data
       - ./logs:/api_integration/logs
     command: ['python', '/api_integration/scenarios/sync_groups_and_zulip.py']
-  zulip_sync_sheets:
-    image: ragnaruk/api_integration:latest
-    restart: always
-    volumes:
-      - ./config/config.py:/api_integration/config/config.py
-      - ./credentials:/api_integration/credentials
-      - ./data:/api_integration/data
-      - ./logs:/api_integration/logs
-    command: ['python', '/api_integration/scenarios/sync_sheets_and_zulip.py']
