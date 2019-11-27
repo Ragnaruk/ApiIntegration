@@ -60,8 +60,6 @@ def main():
                 members = get_members_for_group(service, group['id'])
                 member_emails = set([member['email'] for member in members])
 
-                logger.debug('Group members\' emails: %s', member_emails)
-
                 # Get emails only of those who are registered in Zulip
                 # plus mandatory members'
                 # minus users' who have already been subscribed
