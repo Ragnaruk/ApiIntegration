@@ -15,14 +15,13 @@ prepare:
 	touch ./credentials/credentials.json
 	touch ./credentials/zuliprc.txt
 
-install: prepare
+requirements: prepare
 	pip install --no-cache-dir -r requirements.txt
+
+compose:
+	docker-compose build
+	docker-compose up -d
 
 update:
 	git reset --hard
 	git pull https://github.com/Ragnaruk/api_integration.git
-
-reload:
-	docker-compose down
-	docker-compose build
-	docker-compose up -d
