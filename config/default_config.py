@@ -61,3 +61,8 @@ sync_sheets_and_groups = {
     'google_domain': '',
     'sleep_time': 60 * 30
 }
+
+# Scenario: Get Users From Zulip
+get_users_from_zulip = {
+    'logging_level': DEBUG
+}
