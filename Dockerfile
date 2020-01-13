@@ -1,8 +1,10 @@
 FROM python:3
 
-COPY . /api_integration
+COPY ./requirements.txt /api_integration/requirements.txt
 WORKDIR /api_integration
 
-RUN make install
+RUN pip install --no-cache-dir -qr requirements.txt
 
-ENV PYTHONPATH /api_integration/
+COPY . /api_integration
+
+RUN make prepare
