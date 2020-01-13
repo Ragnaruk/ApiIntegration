@@ -4,7 +4,8 @@ from time import sleep
 from logs.logging import get_logger
 from api_google.google_api_directory import get_directory_service, \
     get_groups_for_domain, get_members_for_group
-from api_zulip.zulip_api import get_client, create_stream, get_all_users, get_all_streams
+from api_zulip.zulip_api import get_client, get_client_user, create_stream, get_all_users, \
+    get_all_streams, create_user_group
 from config.config import sync_groups_and_zulip, path_data_directory
 
 
@@ -33,13 +34,15 @@ def main():
         try:
             service = get_directory_service()
             client = get_client()
+            client_user = get_client_user()
 
             # Get all Google groups of a domain
             groups = get_groups_for_domain(service, sync_groups_and_zulip['google_domain'])
 
             # Get all current Zulip users
+            zulip_users = get_all_users(client)['members']
             zulip_user_emails = set(
-                [member['email'] for member in get_all_users(client)['members']]
+                [member['email'] for member in zulip_users]
             )
 
             zulip_stream_names = sorted(
@@ -74,7 +77,8 @@ def main():
 
                 logger.debug('Emails to register: %s', member_emails)
 
-                if not synced_users_dictionary_creation:
+                if member_emails and not synced_users_dictionary_creation:
+                    # Creating or updating a stream
                     result = create_stream(
                         client,
                         name,
@@ -82,6 +86,11 @@ def main():
                         member_emails,
                         False
                     )
+
+                    # Update a user group
+                    update_user_group(logger, client_user, zulip_users, group['id'],
+                                      group['description'], member_emails)
+
                     number_of_registered_users += len(member_emails)
 
                     logger.debug('Result: %s', result)
@@ -108,6 +117,7 @@ def get_current_stream_name(logger, zulip_stream_names, stream_id):
     :return: Name of the current stream
     """
     name = stream_id
+
     if stream_id not in zulip_stream_names:
         names_with_id = [x for x in zulip_stream_names if x.startswith(stream_id)]
 
@@ -132,6 +142,29 @@ def get_current_stream_name(logger, zulip_stream_names, stream_id):
                 raise ValueError
 
     return name
+
+
+def update_user_group(logger, client_user, zulip_users, name, description, member_emails):
+    """
+    Update a Zulip user group.
+
+    :param logger: Logger object
+    :param client_user: Authenticated client object
+    :param zulip_users: All Zulip users
+    :param name: Name of the group
+    :param description: Description of the group
+    :param member_emails: Emails of members of the group
+    :return: ...
+    """
+    member_ids = []
+
+    for user in zulip_users:
+        if user['email'] in member_emails:
+            member_ids.append(user['id'])
+
+    logger.debug('Member ids: %s', member_ids)
+
+    create_user_group(client_user, name, description, member_ids)
 
 
 if __name__ == '__main__':
