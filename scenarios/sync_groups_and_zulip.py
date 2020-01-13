@@ -88,7 +88,7 @@ def main():
                     )
 
                     # Update a user group
-                    update_user_group(logger, client_user, zulip_users, group['id'],
+                    update_user_group(logger, client_user, zulip_users, group['name'],
                                       group['description'], member_emails)
 
                     number_of_registered_users += len(member_emails)
@@ -160,7 +160,7 @@ def update_user_group(logger, client_user, zulip_users, name, description, membe
 
     for user in zulip_users:
         if user['email'] in member_emails:
-            member_ids.append(user['id'])
+            member_ids.append(user['user_id'])
 
     logger.debug('Member ids: %s', member_ids)
 
