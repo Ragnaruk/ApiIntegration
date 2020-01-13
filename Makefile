@@ -4,9 +4,9 @@ help:
 	@echo '                                                                                             '
 	@echo 'Usage:                                                                                       '
 	@echo '    make prepare                create necessary directories and files                       '
-	@echo '    make install                install python requirements                                  '
+	@echo '    make requirements           install python requirements                                  '
 	@echo '    make update                 reset changes in directory and pull a newest commit from git '
-	@echo '    make reload                 Take down, rebuild, and restart docker containers            '
+	@echo '    make compose                take down, rebuild, and restart docker containers            '
 	@echo '                                                                                             '
 
 prepare:
@@ -16,7 +16,7 @@ prepare:
 	touch ./credentials/zuliprc.txt
 
 requirements: prepare
-	pip install --no-cache-dir -r requirements.txt
+	pip install --no-cache-dir -qr requirements.txt
 
 compose:
 	docker-compose build
