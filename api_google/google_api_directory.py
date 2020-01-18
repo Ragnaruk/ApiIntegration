@@ -82,7 +82,7 @@ def get_members_for_group(service, group):
         maxResults=500
     ).execute()
 
-    members = results.get('members', [])
+    direct_members = results.get('members', [])
 
     while 'nextPageToken' in results:
         results = service.members().list(
@@ -91,7 +91,15 @@ def get_members_for_group(service, group):
             pageToken=results['nextPageToken']
         ).execute()
 
-        members += results.get('members', [])
+        direct_members += results.get('members', [])
+
+    members = []
+
+    for member in direct_members:
+        if member['type'] == 'GROUP':
+            members.extend(get_members_for_group(service, member['email']))
+        else:
+            members.append(member)
 
     return members
 
