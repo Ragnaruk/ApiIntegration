@@ -84,7 +84,8 @@ def main():
                         name,
                         group['description'],
                         member_emails,
-                        False
+                        False,
+                        sync_groups_and_zulip['mandatory_streams']
                     )
 
                     # Update a user group

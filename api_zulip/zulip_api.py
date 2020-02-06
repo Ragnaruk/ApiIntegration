@@ -25,7 +25,7 @@ def get_client_user():
     return client
 
 
-def create_stream(client, name, description, member_emails, invite_only):
+def create_stream(client, name, description, member_emails, invite_only, mandatory_streams=None):
     """
     Create a stream in Zulip and invite users to it.
 
@@ -34,15 +34,20 @@ def create_stream(client, name, description, member_emails, invite_only):
     :param description: Description of the stream
     :param member_emails: List of emails of all users to be invited
     :param invite_only: Option to make the stream invite only
+    :param mandatory_streams: List containing dictionaries of mandatory steams
     :return: Result of request
     """
+    # To make default value immutable
+    if mandatory_streams is None:
+        mandatory_streams = []
+
     result = client.add_subscriptions(
         streams=[
             {
                 'name': name,
                 'description': description
             }
-        ],
+        ] + mandatory_streams,
         principals=member_emails,
         invite_only=invite_only,
     )

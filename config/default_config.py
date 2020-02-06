@@ -18,6 +18,7 @@ sync_groups_and_zulip = {
     'logging_level': INFO,
     'google_domain': '',
     'mandatory_members': [],
+    'mandatory_streams': [],
     'sleep_time': 60 * 10
 }
 
